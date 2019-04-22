@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using TadbirPrint.Properties;
 
 namespace BasePrint
@@ -33,19 +32,8 @@ namespace BasePrint
         
         protected override string Execute(CodeActivityContext context)
         {
-        
-            //return Convert.ToBase64String(Resources.pdf1);
-
             try
             {
-                /*int userId = 1;
-                int workspaceId = 4;
-                int fpid = 4;
-                int subsystemId = 5;
-                string reportName = "پیش فاکتور فروش";
-                string[] paramTypes = new[] { "NUM" };
-                string[] paramValues = new[] { "4549" };*/
-
                 int userId = UserId.Get<int>(context);
                 int workspaceId = WorkspaceId.Get<int>(context);
                 int fpid = FPId.Get<int>(context);
@@ -57,14 +45,14 @@ namespace BasePrint
                 string outputFileName = PrintReport(userId, workspaceId, fpid, subsystemId, reportName, paramTypes, paramValues, out string exceptionStr);
 
                 if (outputFileName == null)
-                    return _codepageService.fromTadbir(exceptionStr);
+                    return exceptionStr;
 
                 return Convert.ToBase64String(File.ReadAllBytes(outputFileName));
             }
             catch (Exception ex)
             {
                 EventLog.WriteEntry("BasePrint.TadbirPrint", ex.Message);
-                return ex.Message;
+                return "-4";  //ex.Message;
                 //throw ex;
             }
         }
@@ -74,7 +62,7 @@ namespace BasePrint
             exceptionStr = "";
             if (string.IsNullOrEmpty(QueuePath))
             {
-                exceptionStr = "مسیر چاپ تعیین نشده است.";
+                exceptionStr = "0"; // "مسیر چاپ تعیین نشده است.";
                 return null;
             }
 
@@ -191,13 +179,13 @@ namespace BasePrint
 
                 if (jobWatcher.Timeout)
                 {
-                    exceptionStr = "لطفا مطمئن شوید برنامه TadRepPdf روی سرور در حال اجراست.";
+                    exceptionStr = "-1";  //"لطفا مطمئن شوید برنامه TadRepPdf روی سرور در حال اجراست.";
                     return null;
                 }
 
                 if (jobWatcher.Error)
                 {
-                    exceptionStr = "برنامه چاپ سرور روی چاپ این فرم خطا داده است.";
+                    exceptionStr = "-2";  //"برنامه چاپ سرور روی چاپ این فرم خطا داده است.";
                     return null;
                 }
 
@@ -208,7 +196,7 @@ namespace BasePrint
             }
             catch (Exception exp)
             {
-                exceptionStr = exp.ToString();
+                exceptionStr = "-3"; //exp.ToString();
                 return null;
             }
         }

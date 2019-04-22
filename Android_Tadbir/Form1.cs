@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +7,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 namespace Android_Tadbir
@@ -21,13 +24,13 @@ namespace Android_Tadbir
         {
             BasePrint.TadbirPrint tadbirPrint = new BasePrint.TadbirPrint();
 
-            /*tadbirPrint.UserId = new InArgument<int>(1);
-            tadbirPrint.WorkspaceId = new InArgument<int>(11);
-            tadbirPrint.FPId = new InArgument<int>(2);
+            tadbirPrint.UserId = new InArgument<int>(1);
+            tadbirPrint.WorkspaceId = new InArgument<int>(12);
+            tadbirPrint.FPId = new InArgument<int>(4);
             tadbirPrint.SubsystemId = new InArgument<int>(5);
             tadbirPrint.ReportName = new InArgument<string>("پیش فاکتور فروش");
-            tadbirPrint.ParamTypes = new InArgument<string>(new JavaScriptSerializer().Serialize(new String[] { "NUM" }));
-            tadbirPrint.ParamValues = new InArgument<string>(new JavaScriptSerializer().Serialize(new String[] { "2" }));*/
+            tadbirPrint.ParamTypes =  "NUM"; 
+            tadbirPrint.ParamValues = "1";
 
             System.Activities.WorkflowInvoker.Invoke<string>(tadbirPrint);
         }
